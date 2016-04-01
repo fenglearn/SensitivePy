@@ -4,18 +4,6 @@ SensitivePy
 使用python开发的极简的敏感词过滤系统
 -----------
 
-UPDATE by tanliang
-----------
-words.txt 更改为 utf-8 编码支持<br />
-增加 /update 和 pymonitor.py
-
-REQUIREMENT by tanliang
-----------
-easy_install watchdog<br />
-<br />
-PS.感谢 caroltc
-
-
 API LIST
 -----------
 1.检测敏感词<br />
@@ -45,6 +33,10 @@ words.txt为敏感词文件<br />
 1.完成核心检测和过滤API<br />
 2.集成bottle框架<br />
 3.检测使用DFA过滤算法<br /><br />
+
+2015/4/1 by tanliang<br />
+1.增加 /update 接口，即时更新 words.txt，需 watchdog 支持<br />
+2.启动 python pymonitor.py localbottle.py<br />
 
 <br />
 重庆尚简科技工作室(http://www.sj-kj.com) caroltc(312493732@qq.com)
