@@ -4,26 +4,18 @@
 from bottle import route, run, request
 from smallgfw import *
 import json
+import hashlib
 import sys
+import shutil
+import tempfile
+import os
 
-def initWords():
-    path = 'words.txt'  
-    fp = open(path,'r')  
-    word_list = []  
-    for line in fp:  
-        line = line[0:-1]  
-        word_list.append(line)  
-    fp.close()
-    return word_list
+file_words = 'words.txt' 
+gfw = GFW(file_words)
 
 @route('/replace', method="POST")
 def replace():
-    reload(sys)
-    sys.setdefaultencoding('utf8')
     getwords = request.params.words or ""
-    gfw = GFW()
-    words = initWords()
-    gfw.set(words)#设置敏感词列表
     res = gfw.check(getwords.encode('utf8'))
 #    for obj in res:
 #        print json.dumps(obj),obj[2]
@@ -32,13 +24,7 @@ def replace():
 
 @route('/check',method="POST")
 def check():
-    reload(sys)
-    sys.setdefaultencoding('utf8')
-    getwords = request.params.words or ""
-    gfw = GFW()
-    words = initWords()
-    gfw.set(words)#设置敏感词列表
-    res = gfw.check(getwords.encode('utf8'))
+    res = gfw.check(request.body.read())
     resp = {}
     resp['count'] = len(res)
     resp['datas']= res
@@ -46,10 +32,19 @@ def check():
 
 @route('/test')
 def test():
-    reload(sys)
-    sys.setdefaultencoding('utf8')
     webdata = '<h1>check</h1><form action="/replace" method="post"><input type="text" name="words" /><input type="submit"></from>'
     return webdata
 
+@route('/update/<time:re:[0-9]+>/<sign:re:[a-zA-Z0-9_]+>',method="POST")
+def update(time, sign):
+    if hashlib.md5((time+"replace with your key")).hexdigest() == sign:
+        file_bak = "_"+file_words
+        shutil.copy(file_words, file_bak)
+        fp = open(file_words,'w')
+        fp.write(request.body.read())  
+        fp.close()
+        os.unlink(file_bak)
+        return "success"
+    return "fail"
 
 run(host='localhost', port=80, debug=True)

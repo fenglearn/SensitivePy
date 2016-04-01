@@ -2,15 +2,19 @@
 #DFA based text filter
 #version=0.3
 class GFW(object):
-    def __init__(self):
+    def __init__(self, file_words):
         self.d = {}
-    
-    #give a list of "ming gan ci"
-    def set(self,keywords):
+        fp = open(file_words,'r')  
+        word_list = []  
+        for line in fp:  
+            line = line.strip(' \t\n\r') 
+            word_list.append(line)  
+        fp.close()
+
         p = self.d
         q = {}
         k = ''
-        for word in keywords:
+        for word in word_list:
             word += chr(11)
             p = self.d
             for char in word:
