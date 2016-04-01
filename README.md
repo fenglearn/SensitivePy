@@ -4,6 +4,18 @@ SensitivePy
 使用python开发的极简的敏感词过滤系统
 -----------
 
+UPDATE by tanliang
+----------
+words.txt 更改为 utf-8 编码支持<br />
+增加 /update 和 pymonitor.py
+
+REQUIREMENT by tanliang
+----------
+easy_install watchdog<br />
+<br />
+PS.感谢 caroltc
+
+
 API LIST
 -----------
 1.检测敏感词<br />
