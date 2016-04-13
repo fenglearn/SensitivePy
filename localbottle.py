@@ -2,6 +2,7 @@
 #localhost testing
 #caroltc 2014/10/7
 from bottle import route, run, request
+from gevent import monkey; monkey.patch_all()
 from smallgfw import *
 import json
 import hashlib
@@ -47,4 +48,4 @@ def update(time, sign):
         return "success"
     return "fail"
 
-run(host='localhost', port=80, debug=True)
+run(host='localhost', port=80, server='gevent')
